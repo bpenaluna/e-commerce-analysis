@@ -1,4 +1,4 @@
-<h1>E-commerce Dataset Analysis</h1>
+<h1>Online Retail Dataset Analysis</h1>
 <h2>Dashboard</h2>
 <img width="1336" height="750" alt="dashboard-screenshot-1" src="images/Dashboard-screenshot.png" />
 
