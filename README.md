@@ -1,27 +1,55 @@
-<h1>Online Retail Dataset Analysis</h1>
+# Online Retail Dataset Analysis
 
-<h2>Dashboard</h2>
+## Preprocessor
+
+```bash
+git clone https://github.com/bpenaluna/e-commerce-analysis
+cd e-commerce-analysis/preprocessor
+python -m venv venv
+venv/Scripts/activate.ps1
+pip install -r requirements.txt
+python preprocessor.py
+```
+
+## Queries
+
+```sql
+WITH ranks AS (
+	SELECT 
+		CustomerNo,
+		SUM(Price * Quantity) TotalSpend,
+		RANK() OVER (ORDER BY SUM(Price * Quantity) DESC) AS rnk
+	FROM dbo.sales
+	WHERE CustomerNo IS NOT NULL
+	GROUP BY CustomerNo
+)
+SELECT rnk, CustomerNo, TotalSpend
+FROM ranks
+WHERE rnk < 6
+ORDER BY rnk
+```
+
+**Result:**
+
+| rnk | CustomerNo | TotalSpend |
+|-----|------------|------------|
+| 1   | 14646      | 2108959.95 |
+| 2   | 18102      | 897137.36  |
+| 3   | 12415      | 895267.24  |
+| 4   | 17450      | 876816.01  |
+| 5   | 14911      | 873037.9   |
+
+## Dashboard
 
 An interactive dashboard built using Microsoft Power BI visualises business KPIs to monitor revenue, customer base, churn and more.
 
-Key takeaways:
-
-<ul>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-</ul>
-
-<h3>Screenshots of the interactive dashboard:</h3>
+### Screenshots of the interactive dashboard
 
 <img width="1336" height="750" alt="dashboard-screenshot-1" src="images/Dashboard-screenshot.png" />
 
-<h2>Similar Customers</h2>
+## Similar Customers
 
-<h3>K-means Clustering</h3>
+### K-means Clustering</h3>
 
 K-means clustering is an unsupervised machine learning algorithm that creates a predetermined (k) number of groups (clusters) of points base on one or more variables.
 
@@ -32,11 +60,9 @@ Inertia is a measure of the spread of the points in each cluster. Lower Inertia 
 
 The customers were grouped into 7 categories, with the K-means algorithm trained on the following engineered features:
 
-<ul>
-    <li><strong>recency</strong>: Number of days since the customers last purchase.</li>
-    <li><strong>frequency</strong>: Number of transactions the customer has made.</li>
-    <li><strong>monetary</strong>: Total amount spent by the customer.</li>
-</ul>
+- **recency**: Number of days since the customers last purchase.
+- **frequency**: Number of transactions the customer has made.
+- **monetary**: Total amount spent by the customer.
 
 The distributions of each cluster for each of the variables defined above are given below.
 
@@ -44,5 +70,5 @@ The distributions of each cluster for each of the variables defined above are gi
 <img width="1336" alt=box plot of frequency src="images/boxplot_frequency.png">
 <img width="1336" alt=box plot of monetary src="images/boxplot_monetary.png">
 
-<h2>Dataset</h2>
+## Dataset
 Dataset obtained from <a href='https://www.kaggle.com/datasets/gabrielramos87/an-online-shop-business'>Kaggle</a>
